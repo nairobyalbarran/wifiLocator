@@ -41,10 +41,9 @@
 
      });
 
-     $scope.$on("centerUrlHash", function(event, centerHash) {
+    $scope.$on("centerUrlHash", function(event, centerHash) {
                   console.log("url", centerHash);
                   $location.search({ c: centerHash });
-                  console.log("entro");
         });
     $scope.pointsFromController = [{lat: 40.4878127, lng: -3.6673434},{lat: 40.4874738, lng: -3.6637454}];
      $scope.getPointsFromSomewhere = function() {

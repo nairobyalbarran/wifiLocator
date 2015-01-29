@@ -1,0 +1,22 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+                {
+                   "type": "Feature",
+                    "id": "1",
+                    "properties": {
+                         	"name":"Center"
+                              	},
+                    "geometry": {
+                            "type": "MultiPoint",
+                            "coordinates": [
+                                          [-3.704638, 40.425522],
+                                          [-3.68903737, 40.42018892],
+                                          [-3.70269299, 40.42007983],
+                                          [-3.69947433, 40.41788042],
+                                          [-3.70192185, 40.4278864]
+                                          ]
+                                        }
+                      }
+                ]
+  }

@@ -1,54 +1,79 @@
   var app = angular.module("demoapp", ['leaflet-directive']);
 
-  app.controller("DemoController", [ "$scope", "$location", function($scope, $location, $http) {
-
-  angular.extend($scope,{
+  app.controller("GeoJSONController", ['$scope', '$http','leafletData',function($scope, $http, leafletData) {
+   angular.extend($scope,{
+    tiles: {
+            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          },
       center: {
-                lat: 40.4878127,
-                lng: -3.6673434,
-                autoDiscover: true,
-                zoom: 16
-              },
-      markers: {
-                myMarker: {
-                    lat: 40.4878127,
-                    lng: -3.6673434,
-                    message: "Hello",
-                    focus: true,
-                    draggable: false
-                    },
-                otherMarker:{
-                  lat: 40.4874738,
-                  lng: -3.6637454,
-                  message: "Hello",
-                  focus: true,
-                  draggable: false
-                   }
-               },
-        link: function(scope, element, attrs) {
-        var points = [{lat: 40.4878127, lng: -3.6673434},{lat: 40.4874738, lng: -3.6637454}];
-              updatePoints(points);
+                    lat: 40.488585,
+                    lng: -3.669471,
+                    autoDiscover: true,
+                    zoom: 16
 
-              function updatePoints(pts) {
-                 for (var p in pts) {
-                    L.marker([pts[p].lat, pts[p].lng]).addTo(map);
-                 }
+                },
+                markers: {
+                        lat: 40.488585,
+                        lng: -3.669471,
+                        focus: true,
+                        message: "Hey, drag me if you want",
+                        title: "Marker",
+                        draggable: true
+                    
+                }
+      
+
+    });
+
+    $scope.centerJSON = function() {
+            leafletData.getMap().then(function(map) {
+                var latlngs = [];
+                //for (var i in $scope.geojson.data.features[0].geometry.coordinates) 
+                //var i=0; i< data.length; i++
+                for (var i in $scope.geojson.data.features[0].geometry.coordinates) {
+                  //alert($scope.geojson.data.features[0].geometry.coordinates);
+                    var coord = $scope.geojson.data.features[0].geometry.coordinates[i];
+                    console.log(coord);
+                    for (var j in coord){
+                     var points = coord[j];
+                     console.log(points); 
+                    }
+                 latlngs.push(L.GeoJSON.coordsToLatLng(coord));
+                  //latlngs.push = data[i];
+                   //console.log(latlngs);
               }
-              scope.$watch(attr.pointsource, function(value) {
-                 updatePoints(value);
-              });
-           }
+                map.fitBounds(latlngs);
+            });
+        };
 
-     });
 
-    $scope.$on("centerUrlHash", function(event, centerHash) {
-                  console.log("url", centerHash);
-                  $location.search({ c: centerHash });
+/*for (var i in $scope.geojson.data.features[0].geometry.coordinates) {
+                    var coord = $scope.geojson.data.features[0].geometry.coordinates[i];
+                    for (var j in coord) {
+                        var points = coord[j];
+                        for (var k in points) {
+                            latlngs.push(L.GeoJSON.coordsToLatLng(points[k]));
+                        }
+                    }
+                }
+*/
+
+
+        // Get the countries geojson data from a JSON
+        $http.get("js/json/wifis.json").success(function(data, status) {
+          console.log("entro en datos");
+            angular.extend($scope, {
+                geojson: {
+                    data: data,
+                    style: {
+                        fillColor: "black",
+                        radius: 10,
+                        weight: 10,
+                        opacity: 1,
+                        color: 'white',
+                        fillOpacity: 0.7
+                    }
+                }
+            });
         });
-    $scope.pointsFromController = [{lat: 40.4878127, lng: -3.6673434},{lat: 40.4874738, lng: -3.6637454}];
-     $scope.getPointsFromSomewhere = function() {
-       $http.get('wifi.json').success(function(somepoints) {
-       $scope.pointsFromController = somepoints;
-       });
-  };
   }]);

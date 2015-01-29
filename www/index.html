@@ -1,25 +1,32 @@
-<!DOCTYPE html>
-<html ng-app="demoapp">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-        <title>wifiLocator</title>
-        <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-        <link href="css/style.css" rel="stylesheet">
-        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-        <script src="lib/ionic/js/ionic.bundle.js"></script>
-        <script src="cordova.js"></script>
-        <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-        <script src="http://tombatossals.github.io/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
-        <script src="js/app.js"></script>
-    </head>
-    <body ng-controller="DemoController">
-        <ion-header-bar class="bar-positive">
-            <h1 class="title">Current Location</h1>
-        </ion-header-bar>
-        <ion-content>
-        <leaflet center="center" url-hash-center="yes" markers="markers" id="map" pointsource="pointsFromController">
-           </leaflet>
-        </ion-content>
-    </body>
-</html>
+    <!DOCTYPE html>
+    <html ng-app="demoapp">
+        <head>
+            <meta charset="utf-8">
+            <!--<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">-->
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <title>wifiLocator</title>
+            <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+            <link href="css/style.css" rel="stylesheet">
+            <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+            <script src="lib/ionic/js/ionic.bundle.js"></script>
+            <script src="cordova.js"></script>
+            <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+            <script src="http://tombatossals.github.io/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+            <script src="js/app.js"></script>
+        </head>
+        <body ng-controller="GeoJSONController">
+            <ion-header-bar class="bar bar-header bar-positive" id="head">
+                <h1 class="title">Current Location</h1>
+            </ion-header-bar>
+            <ion-content>
+            <!--<leaflet center="center" url-hash-center="yes" geojson="geojson" markers="markers" id="map" pointsource="pointsFromController" width="640px" height="480px">-->
+                <leaflet center="center" markers="markers" url-hash-center="yes" geojson="geojson" id="map"></leaflet>
+                </leaflet>
+            </ion-content>
+            <ion-footer class="bar bar-footer">
+            <button type="button" class="button button-balanced" value="Click to center" ng-click="centerJSON()" id="localizar">
+                        Localizar
+                 </button>
+            </ion-footer>
+        </body>
+    </html>

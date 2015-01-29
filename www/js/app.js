@@ -28,38 +28,21 @@
     $scope.centerJSON = function() {
             leafletData.getMap().then(function(map) {
                 var latlngs = [];
-                //for (var i in $scope.geojson.data.features[0].geometry.coordinates) 
-                //var i=0; i< data.length; i++
                 for (var i in $scope.geojson.data.features[0].geometry.coordinates) {
-                  //alert($scope.geojson.data.features[0].geometry.coordinates);
                     var coord = $scope.geojson.data.features[0].geometry.coordinates[i];
                     console.log(coord);
-                    for (var j in coord){
-                     var points = coord[j];
-                     console.log(points); 
+                        for (var j in coord){
+                             var points = coord[j];
+                            //console.log(points); 
                     }
                  latlngs.push(L.GeoJSON.coordsToLatLng(coord));
-                  //latlngs.push = data[i];
-                   //console.log(latlngs);
               }
                 map.fitBounds(latlngs);
             });
         };
 
 
-/*for (var i in $scope.geojson.data.features[0].geometry.coordinates) {
-                    var coord = $scope.geojson.data.features[0].geometry.coordinates[i];
-                    for (var j in coord) {
-                        var points = coord[j];
-                        for (var k in points) {
-                            latlngs.push(L.GeoJSON.coordsToLatLng(points[k]));
-                        }
-                    }
-                }
-*/
-
-
-        // Get the countries geojson data from a JSON
+        // Get the wifi data from a JSON
         $http.get("js/json/wifis.json").success(function(data, status) {
           console.log("entro en datos");
             angular.extend($scope, {

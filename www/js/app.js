@@ -1,77 +1,59 @@
-// Ionic Starter App
-
 var app = angular.module("demoapp", ['leaflet-directive']);
 
-app.controller("DemoController", [ "$scope", "$location", function($scope, $location) {
+  app.controller("GeoJSONController", ['$scope', '$http','leafletData',function($scope, $http, leafletData) {
+   angular.extend($scope,{
+    tiles: {
+            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          },
+      center: {
+                    lat: 40.488585,
+                    lng: -3.669471,
+                    autoDiscover: true,
+                    zoom: 16
 
-   //here's the property you can just update.
-  /* $scope.pointsFromController = [{lat: 40.4878127, lng: -3.6673434},{lat: 40.4874738, lng: -3.6637454}];
+                },
+                markers: {
+                        lat: 40.488585,
+                        lng: -3.669471,
+                        focus: true,
+                        message: "Hey, drag me if you want",
+                        title: "Marker",
+                        draggable: true
+                }
+    });
 
-   //here's some contrived controller method to demo updating the property.
-   $scope.getPointsFromSomewhere = function() {
-     $http.get('http://miquelcamps.cartodb.com/api/v2/sql?q=SELECT * FROM public.wifis_p_blicas_de_madrid').success(function(somepoints) {
-         $scope.pointsFromController = somepoints;
-     });
-   }*/
-// Nothing here!
-angular.extend($scope, {
-
-    center: {
-              lat: 40.4878127,
-              lng: -3.6673434,
-              autoDiscover: true,
-              zoom: 16
-           },
-    markers: {
-              myMarker: {
-                lat: 40.4878127,
-                lng: -3.6673434,
-                message: "Hello",
-                focus: true,
-                draggable: false
-              },
-              otherMarker:{
-                lat: 40.4874738,
-                lng: -3.6637454,
-                message: "Hello",
-                focus: true,
-                draggable: false
+    $scope.centerJSON = function() {
+            leafletData.getMap().then(function(map) {
+                var latlngs = [];
+                for (var i in $scope.geojson.data.features[0].geometry.coordinates) {
+                    var coord = $scope.geojson.data.features[0].geometry.coordinates[i];
+                    console.log(coord);
+                        for (var j in coord){
+                             var points = coord[j];
+                            //console.log(points); 
+                    }
+                 latlngs.push(L.GeoJSON.coordsToLatLng(coord));
               }
-           }
-   });
-
-   $scope.$on("centerUrlHash", function(event, centerHash) {
-                console.log("url", centerHash);
-                $location.search({ c: centerHash });
+                map.fitBounds(latlngs);
             });
-}]);
+        };
 
 
-
-
-           
-
-/*function MapCtrl($scope, $http) {
-   //here's the property you can just update.
-   $scope.pointsFromController = [{lat: 40, lng: -86},{lat: 40.1, lng: -86.2}];
-
-   //here's some contrived controller method to demo updating the property.
-   $scope.getPointsFromSomewhere = function() {
-     $http.get('http://miquelcamps.cartodb.com/api/v2/sql?q=SELECT * FROM public.wifis_p_blicas_de_madrid').success(function(somepoints) {
-         $scope.pointsFromController = somepoints;
-     });
-   }
-}*/
-
-/*$scope.markers = new Array();
-
-            $scope.$on("leafletDirectiveMap.click", function(event, args){
-                var leafEvent = args.leafletEvent;
-
-                $scope.markers.push({
-                    lat: leafEvent.latlng.lat,
-                    lng: leafEvent.latlng.lng,
-                    message: "My Added Marker"
-                });
-            });*/
- //       } ]);
+        // Get the wifi data from a JSON
+        $http.get("js/json/wifis.json").success(function(data, status) {
+          console.log("entro en datos");
+            angular.extend($scope, {
+                geojson: {
+                    data: data,
+                    style: {
+                        fillColor: "black",
+                        radius: 10,
+                        weight: 10,
+                        opacity: 1,
+                        color: 'white',
+                        fillOpacity: 0.7
+                    }
+                }
+            });
+        });
+  }]);
